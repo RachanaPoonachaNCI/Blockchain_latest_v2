@@ -1,22 +1,20 @@
 {
     "1" : {
-        "name" : "Sarah Montes",
+        "name" : "Raechal",
         "image" : "images/testimonial/1.jpg",
         "position": "Student",
         "testimonial": [
-            "I would highly recommend this unit of study for all who have the desire to understand",
+            "I would highly recommend Yoga Studio for all who have the desire to understand",
             "the joy that yoga practice brings to ones life and beyond Yoga is something",
             "I look forward to in my week"
         ]
     },
     "2" : {
-        "name" : "Sarah Montes",
+        "name" : "Naina",
         "image" : "images/testimonial/1.jpg",
         "position": "Student",
         "testimonial": [
-            "I would highly recommend this unit of study for all who have the desire to understand",
-            "the joy that yoga practice brings to ones life and beyond Yoga is something",
-            "I look forward to in my week"
+            "Exceptional yoga classes at the Yoga Studio. The instructor's expertise and the serene atmosphere make every session a rejuvenating experience."
         ]
     }
 }
