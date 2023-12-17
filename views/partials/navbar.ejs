@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <a class="logo" href="/"><img src="../images/logo.png" alt=""></a>
+        </div>
+        <div class="col-md-8 col-sm-12">
+            <div id="navigation" class="navigation">
+                <ul class="pull-right">
+                    <li class="active"><a href="/" title="Home" class="animsition-link">Home</a></li>
+                    <li><a href="/courses" title="Courses" class="animsition-link">Courses</a></li>
+                    <li class="active"><a href="/foodcentral" title="about" class="animsition-link">Food Data</a></li>
+                    <li class="active"><a href="/about" title="about" class="animsition-link">About Us</a></li>
+                    <li class="active"><a href="javascript:void(0)" title="Logout" >User</a>
+                        <ul>
+                            <li><a href="/login" title="Login" class="animsition-link">Login</a></li>
+                            <li><a href="javascript:void(0)" onclick="handleLogout();" title="Logout" class="animsition-link">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function handleLogout(){
+        const url = window.location.href.split("/")
+        const route = url[url.length - 1]
+        const address = localStorage.getItem("metamask-address");
+        const data = {
+            address : address
+        }
+        fetch("/logout", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then((response)=>{
+            if(response.status==402){
+                alert("No user is logged in!!");
+                throw Error("No user is logged in!!");
+            }
+            return response.json();
+        })
+        .then(data => {
+            localStorage.setItem("metamask-address", undefined);
+            const anchor = document.createElement('a');
+            anchor.href = data.redirect;
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const anchor = document.createElement('a');
+            anchor.href = route;
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+        });    
+    }
+</script>

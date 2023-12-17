@@ -1,0 +1,82 @@
+<%- include partials/header.ejs %>
+
+<div class="intro-section-plain">
+    <div class="">
+        <div class="header">
+            <%- include partials/navbar.ejs %>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12 text-center">
+                <div class="intro-caption">
+                    <h1 class="intro-title">Enter Appointment Details</h1>
+                    <br />
+                    <div class="content-area">
+                        <div class="row">
+                        <form>
+                            <div class="col-md-12 col-sm-12 form-group col-md-4">
+                                <label for="inputState">Select Appointment Date</label>
+                                <select name="date" id="inputState" class="form-control">
+                                    <% for(let i=0;i<slots.length;i++){ %>
+                                        <option><%= slots[i] %></option>
+                                    <% } %>
+                                </select>
+                            </div>
+                            <div class="mb60 col-md-12 col-sm-12 form-group">
+                                <label for="details">Enter health details and goals</label>
+                                <p class="mb10">We need your to know your health background and your goals to prepare a plan for you.</p>
+                                <p class="mb10">Provide all the necessary details to book an appointment</p>
+                                <textarea name="data" class="form-control" id="details" rows="10"></textarea>
+                            </div>
+                            <a href="javascript:void(0)" onclick="handleSubmit();" class="col-md-12 col-sm-12 btn btn-outline">Book and Appointment</a> </div>
+                        </form>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <script>
+    function handleSubmit(){
+        const date = document.getElementById("inputState").value;
+        const details = document.getElementById("details").value;
+        
+        // Check if the user has logged in
+        const address =  localStorage.getItem("metamask-address");
+        const data = {address:address};
+        fetch("/status", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then((response)=>{
+            return response.json();
+        })
+        .then(async data => {
+            if(data.status){
+                let contract = await getContractAccount(false);
+                console.log("Contract Balance:",await getContractBalance());
+                message = {
+                    date : date,
+                    details : details
+                }
+                await addDataToContract(data.address,message);
+            }else{
+                const anchor = document.createElement('a');
+                anchor.href = "/login";
+                document.body.appendChild(anchor);
+                anchor.click();
+                document.body.removeChild(anchor);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        }); 
+    }
+  </script>
+
+
+<%- include partials/footer.ejs %>

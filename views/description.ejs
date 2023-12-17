@@ -1,0 +1,111 @@
+<%- include partials/header.ejs %>
+
+<div class="page-header">
+    <div class="">
+        <div class="header">
+            <%- include partials/navbar.ejs %>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8">
+                <div class="content-area">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="post-holder mb40">
+                                <div class="post-img"><img src="<%= course_data.image %>" alt="" class="img-responsive"> </div>
+                                <div class="post-block pinside30 outline">
+                                    <div class="post-meta mb30">
+                                        <span class="meta-date"><i class="fa fa-calendar"></i><%= course_data.date %></span>
+                                    </div>
+                                    <div class="post-header mb20">
+                                        <h1 class="post-title mb30"><%= course_data.title %></h1>
+                                    </div>
+                                    <div class="post-content">
+                                        <% for(let i = 0; i < course_data.description.length; i++) { %>
+                                        <p><%= course_data.description[i] %></p>
+                                        <% } %>
+                                        <hr>
+                                    </div>
+                                    <a href="javascript:void(0)" onclick="handleBuy();" id="button" class="btn btn-outline">Enroll for <%= course_data.price %> ETH</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function handleBuy(){
+        const amount = Number(document.getElementById("button").innerHTML.split(" ")[2])* (10**18);
+        console.log("Sending:",amount);
+
+        // Check if the user has logged in
+        const address =  localStorage.getItem("metamask-address");
+        const data = {address:address};
+        const url = window.location.href.split("/")
+        const route = url[url.length - 1]
+        fetch("/status", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        })
+        .then((response)=>{
+            return response.json();
+        })
+        .then(async data => {
+            if(data.status){
+                const url = window.location.href.split("/")
+                const route = url[url.length - 1]
+                const newData = {
+                    address : address,
+                    id : route
+                }
+                fetch("/check", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newData)
+                    })
+                    .then((response)=>{
+                        return response.json();
+                    })
+                    .then(async data => {
+                        if(!data.status){
+                            let contract = await getContractAccount();
+                            console.log("Contract Balance:",await getContractBalance());
+                            await depositContract(data.address,amount,route);
+                        }else{
+                            alert("You have already enrolled for this course!!");
+                            const anchor = document.createElement('a');
+                            anchor.href = "/courses";
+                            document.body.appendChild(anchor);
+                            anchor.click();
+                            document.body.removeChild(anchor);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    }); 
+            }else{
+                const anchor = document.createElement('a');
+                anchor.href = "/login";
+                document.body.appendChild(anchor);
+                anchor.click();
+                document.body.removeChild(anchor);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        }); 
+    }
+</script>
+<%- include partials/footer.ejs %>

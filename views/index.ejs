@@ -1,0 +1,127 @@
+<%- include partials/header.ejs %>
+
+
+<div class="intro-section">
+  <div class="">
+      <div class="header">
+          <%- include partials/navbar.ejs %>
+      </div>
+  </div>
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 text-center">
+              <div class="intro-caption">
+                  <h1 class="intro-title">The Best Yoga Studio</h1>
+                  <p class="mb40">Based in Gujarat, yoga studio is india’s leading yoga studio offering over 40 per classes per week across
+                      <br> four locations in Mumbai, Delhi, Ahemedabad and Rajkot.</p>
+                  <a href="/appointment" class="btn btn-default btn-lg">make an appointment</a> </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="section-space80 bg-light">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 text-center mb40">
+              <h1 class="mb20">Welcome to Our Yoga Studio</h1>
+              <p class="lead">Our vision is to transform lives through spreading inspiration, love, joy, connection and optimal health with the
+                  <br>teachings of yoga, and a vibrant community of learners who wish to live life in a healthy, joy-filled way.
+                  <br>We look forward to welcoming you in to our community!</p>
+              <a href="/about" class="btn btn-outline">About Us</a>
+          </div>
+          <div class="col-md-offset-2 col-md-8 col-sm-12">
+              <div class="video-section">
+                  <div class="video-img">
+                      <img src="images/about-img.jpg" alt="Hair-Care Website Template" class="img-responsive mb30"> </div>
+                  <div class="video-action">
+                      <a href="javascript:void(0)" type="button" class=" " data-toggle="modal" data-target="#myModal"><img src="images/video-sign.png" alt="Hair-Care Website Template" class=""></a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="section-space60">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-6 col-sm-6">
+              <div class="trainers-img">
+                  <img src="images/trainers.png" class="img-responsive" alt="">
+              </div>
+          </div>
+          <div class="col-md-offset-1 col-md-5 col-sm-6">
+              <div class="trainers-info pdt60">
+                  <h1 class="classes-title">A word from our expert trainer</h1>
+                  <div class="mb40">
+                      <span class="meta-trainers">- Jennifer C. Walker</span>
+                  </div>
+                  <p class="lead mb30">“Yoga is my favourite way to pretend
+                      <br> to work out”</p>
+                  <p class="mb40">Curabitur nec purus sit amet libero scelerisque sagittisnec lorem facilisis nulla vel tincidunt facilisecenas id nulmpus em ipsumes sitamet dolor lorem donecnulla deresones joiumnes. ipsums dolor sed elit fringilla suscipit sed varius diam aliquam ligula enim pulvinar vivamus tincidunt lorem isone lor deroce renoies.</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="section-space80">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-offset-1 col-md-10 col-sm-12">
+              <div class="row">
+                  <div class="col-md-6 col-sm-6">
+                      <div class="classes-logo mb60">
+                          <img src="images/classes-logo.png" alt="" class="">
+                      </div>
+                      <h1 class="classes-title mb40">Choose Your Classes and<br>Start Your Training</h1>
+                      <p class="classes-content mb40">Curabitur venenatis pulvinar sem quis lorem ipsum sitamet dolor sitamet domec voinose renoialiquam nibh.</p>
+                      <a href="#contact-us" class="btn btn-outline">contact us</a>
+                  </div>
+                  <div class="col-md-6 col-sm-6">
+                      <div class="trainers-img">
+                          <img src="images/trainers1.png" class="" alt="">
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="section-space80 bg-light">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-offset-1 col-md-10 col-sm-12">
+              <div class="row">
+                  <div class="col-md-12 col-sm-12 text-center mb60">
+                      <h1>Student Reviews</h1>
+                      <p>Maecenas gravidaorciet ullamcorper lobortis libero mauris rutrum quam.</p>
+                  </div>
+              </div>
+              <div class="text-center pinside30 bg-white outline">
+                  <div class="owl-carousel owl-theme testimonial-carousel">
+                    <% for(let i = 0; i < testimonial_ids.length; i++) { %>
+                      <div class="owl-item">
+                          <div class="testimonial-img mb30">
+                              <img src="images/testimonial1.jpg" class="img-responsive img-circle" alt="">
+                          </div>
+                          <div class="testimonial-info">
+                              <p class="testimonial-content">
+                                <% for(let j = 0; j < testimonial_data[testimonial_ids[i]].testimonial.length; j++) { %>
+                                    <%= testimonial_data[testimonial_ids[i]].testimonial[j] %><br>
+                                <% } %>
+                                </p>
+                              <span class="testimonial-text">- <%= testimonial_data[testimonial_ids[i]].name %></span>
+                              <span class="testimonial-meta">(<%= testimonial_data[testimonial_ids[i]].position %>)</span>
+                          </div>
+                      </div>
+                      <% } %>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<%- include partials/footer.ejs %>

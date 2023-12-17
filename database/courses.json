@@ -1,0 +1,30 @@
+{
+    "1" : {
+        "title" : "Tips To Maintain Your ‘Yoga High’",
+        "date" : "25 April, 2017",
+        "intro" : "Fusce vitae nibh quisnulla lacinia pharetra vel ac augorbi a mi nec augue euismod ultrices is eget id enean a condimentum vet eleifend vehicula nequam ullamcorper tortor sitamet ones sapien sempein molestie risus feugam doloeget purus finibus u eu non dolor.",
+        "description" : [
+            "Fusce vitae nibh quisnulla lacinia pharetra vel ac augorbi a mi nec augue euismod ultrices is eget id enean a condimentum vet eleifend vehicula nequam ullamcorper tortor sitamet ones sapien sempein molestie risus feugam doloeget purus finibus u eu non dolor eleifend at sem eget, interdum ullamcorper nulla. Curabitur mauris ex, convallis.",
+            "Nullam vel diam sit amet erat sagittis egestas. Duis imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In suscipit erat vel tincidunt interdumusce vaseron juekrsh.",
+            "Maecenas volutpat urna ac volutpat cursuis interdum velit hendrerit nisl vulputate venenatbi nulla n ornare id maximus id, mollis a turpiullam aquam eeros lobortis vestibulum necsit amet sapieauris at faucibus sapien malesuada fringilla nras in tempor puru luctus sap.",
+            "Vellolam vel diam sit amet erat sagittis egestas.is imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus muuekrsh In suscipit erat vel tincidunt interdumusce vaseron."
+        ],
+        "price" : 0.0002,
+        "image" : "images/courses/1.jpg"
+    },
+    "2" : {
+        "title" : "Relax More, Metabolize Better",
+        "date" : "25 April, 2017",
+        "intro" : "Suspendisse laciniunc neaculis pulvinar lacus nibh molestie magna non egestas leo ligula non nulla viverra quamonec tempor neque egetleo feugiaet suscipit tortor porenean sagittis porta risus non ultrorbi facilisis mollis fermeoin eu gravida sapiras justo justo.",
+        "description" : [
+            "Suspendisse laciniunc neaculis pulvinar lacus nibh molestie magna non egestas leo ligula non nulla viverra quamonec tempor neque egetleo feugiaet suscipit tortor porenean sagittis porta risus non ultrorbi facilisis mollis fermeoin eu gravida sapiras justo justo.",
+            "Vellolam vel diam sit amet erat sagittis egestas.is imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus muuekrsh In suscipit erat vel tincidunt interdumusce vaseron.",
+            "Nullam vel diam sit amet erat sagittis egestas. Duis imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In suscipit erat vel tincidunt interdumusce vaseron juekrsh.",
+            "Maecenas volutpat urna ac volutpat cursuis interdum velit hendrerit nisl vulputate venenatbi nulla n ornare id maximus id, mollis a turpiullam aquam eeros lobortis vestibulum necsit amet sapieauris at faucibus sapien malesuada fringilla nras in tempor puru luctus sap.",
+            "Vellolam vel diam sit amet erat sagittis egestas.is imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus muuekrsh In suscipit erat vel tincidunt interdumusce vaseron."
+        ],
+        "price" : 0.0008,
+        "image" : "images/courses/2.jpg"
+    }
+}
+    

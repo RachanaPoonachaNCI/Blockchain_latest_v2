@@ -1,0 +1,145 @@
+<%- include partials/header.ejs %>
+
+
+<div class="intro-section">
+  <div class="">
+      <div class="header">
+          <%- include partials/navbar.ejs %>
+      </div>
+  </div>
+  <p hidden id="api_key"><%= api_key %></p>
+  <script>
+    var result = {}
+    function generateTable(tableData){
+        try{    
+            var tbody = document.getElementById('myTableBody');
+            const title = '<tr>'+
+                                '<th scope="row"><b>Item</b></th>'+
+                                '<td><b>Brand Name</b></td>'+
+                                '<td><b>Category</b></td>'+
+                                '<td><b>Serving size</b></td>'+
+                                '<td><b>Ingredients</b></td>'+
+                            '</tr>'
+            tbody.innerHTML = title;
+            tableData.foods.forEach(row => {
+                const htmlCode = '<tr>' +
+                            `<th scope="row">${row.description}</th>` +
+                            `<td>${row.brandName}</td>` +
+                            `<td>${row.foodCategory}</td>` +
+                            `<td>${row.servingSize} ${row.servingSizeUnit}</td>` +
+                            `<td>${row.ingredients}</td>` +
+                            '</tr>';
+                      
+                tbody.innerHTML += htmlCode;
+
+            });
+
+        }catch(err){
+            console.log("error:",err);
+        }
+        
+    }
+    function getSearchResult(){
+        const api_key = document.getElementById("api_key").innerHTML;
+        const keyword = document.getElementById("search").value;
+        var searchKey = keyword.split(" ").join("%20");
+        fetch( `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${api_key}&query=${searchKey}` )
+            .then( response => response.json() )
+            .then( response => {
+                console.log(response);
+                result["1"] = response; 
+                generateTable(response);
+            } ).catch((err)=>{
+                console.log("Error")
+            });
+    }
+    async function nextPage(){
+        const api_key = document.getElementById("api_key").innerHTML;
+        const keyword = document.getElementById("search").value;
+        var searchKey = keyword.split(" ").join("%20");
+        var tableData;
+        const current_page = Number(document.getElementById("current").innerHTML);
+        if(current_page===result[`${current_page}`].totalPages){
+            return;
+        }
+        if(Object.keys(result).includes(`${current_page+1}`)){
+            tableData = result[`${current_page+1}`]
+            console.log("Existing data:",tableData);
+        }else{
+            await fetch( `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${api_key}&query=${searchKey}&pageNumber=${current_page+1}` )
+            .then( response => response.json() )
+            .then( response => {
+                console.log("New data:",response);
+                result[`${current_page+1}`] = response;
+                tableData = response;
+            } ).catch((err)=>{
+                console.log("Error")
+            });
+        }        
+
+        if(tableData){
+            document.getElementById("current").innerHTML = `${current_page+1}`
+            generateTable(tableData);
+        }
+    }
+    function prevPage(){
+        let tableData;
+        const current_page = Number(document.getElementById("current").innerHTML);
+        if(current_page===1){
+            return;
+        }
+        if(Object.keys(result).includes(`${current_page-1}`)){
+            tableData = result[`${current_page-1}`]
+            console.log("Existing data:",tableData);
+        }
+        if(tableData){
+            document.getElementById("current").innerHTML = `${current_page-1}`
+            generateTable(tableData);
+        }
+    }
+  </script>
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 text-center">
+              <div class="intro-caption">
+                  <h1 class="intro-title">Food Data Central</h1>
+                  <br />
+                  <div class="col-md-12 col-sm-12">
+                    <div class="widget-search mb40">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" id="search" class="form-control" placeholder="Search Here" aria-describedby="basic-addon2">
+                                <span onclick="getSearchResult();" class="input-group-addon" id="basic-addon2"> <i class="fa fa-search"></i></span> </div>
+                            <!-- /input-group -->
+                        </form>
+                    </div>
+                </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="section-space80 bg-light">
+  <div class="container">
+      <div class="row">
+          <div class="col-md-12 col-sm-12 text-center mb40">
+                <div class="st-pagination">
+                    <table class="table">
+                        <tbody id="myTableBody">
+                        </tbody>
+                    </table>
+                    <!--st-pagination-->
+                    <ul class="pagination">
+                        <li onclick="prevPage();"> <a href="javascript:void(0)" aria-label="previous"><span aria-hidden="true">previous</span></a></li>
+                        <li class="active"><a href="javascript:void(0)" id="current">1</a></li>
+                        <li onclick="nextPage();"> <a href="javascript:void(0)" aria-label="Next"><span aria-hidden="true">next</span></a></li>
+                    </ul>
+                <!--/.st-pagination-->
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<%- include partials/footer.ejs %>

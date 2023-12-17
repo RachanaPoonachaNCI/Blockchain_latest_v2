@@ -1,0 +1,23 @@
+{
+    "1" : {
+        "name" : "Sarah Montes",
+        "image" : "images/testimonial/1.jpg",
+        "position": "Student",
+        "testimonial": [
+            "I would highly recommend this unit of study for all who have the desire to understand",
+            "the joy that yoga practice brings to ones life and beyond Yoga is something",
+            "I look forward to in my week"
+        ]
+    },
+    "2" : {
+        "name" : "Sarah Montes",
+        "image" : "images/testimonial/1.jpg",
+        "position": "Student",
+        "testimonial": [
+            "I would highly recommend this unit of study for all who have the desire to understand",
+            "the joy that yoga practice brings to ones life and beyond Yoga is something",
+            "I look forward to in my week"
+        ]
+    }
+}
+    

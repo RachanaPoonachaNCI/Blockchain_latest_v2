@@ -1,0 +1,42 @@
+<%- include partials/header.ejs %>
+
+<div class="page-header">
+    <div class="">
+        <div class="header">
+            <%- include partials/navbar.ejs %>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8">
+                <div class="content-area">
+                    <div class="row">
+                        <% for(let i = 0; i < course_ids.length; i++) { %>
+                        <div class="col-md-12 col-sm-12">
+                            <div class="post-holder mb40">
+                                <div class="post-img">
+                                    <a href="/<%= course_ids[i] %>" class=" imghover"><img src="<%= course_data[course_ids[i]].image %>" alt="" class="img-responsive"></a>
+                                </div>
+                                <div class="post-block pinside30 outline">
+                                    <div class="post-meta mb30">
+                                        <span class="meta-date"><i class="fa fa-calendar"></i><%= course_data[course_ids[i]].date %></span>
+                                    </div>
+                                    <div class="post-header mb20">
+                                        <h1 class="post-title mb30"><a href="/<%= course_ids[i] %>" class="title"><%= course_data[course_ids[i]].title %></a></h1>
+                                    </div>
+                                    <div class="post-content">
+                                        <p><%= course_data[course_ids[i]].intro %></p>
+                                        <a href="/<%= course_ids[i] %>" class="btn btn-outline">Read More</a> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include partials/footer.ejs %>
