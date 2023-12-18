@@ -128,7 +128,7 @@ const contracts = {
         Address : "0xf3093433d779f5180f62796cdd31be35b3249e7c"
     }
 }
-
+//Connecting to Metamask
 const connectMetamask = async () => {
     let account;
     console.log(window.ethereum);

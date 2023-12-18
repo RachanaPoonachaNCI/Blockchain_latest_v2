@@ -1,30 +1,37 @@
 {
     "1" : {
-        "title" : "Tips To Maintain Your ‘Yoga High’",
-        "date" : "25 April, 2017",
-        "intro" : "Fusce vitae nibh quisnulla lacinia pharetra vel ac augorbi a mi nec augue euismod ultrices is eget id enean a condimentum vet eleifend vehicula nequam ullamcorper tortor sitamet ones sapien sempein molestie risus feugam doloeget purus finibus u eu non dolor.",
+        "title" : "Hatha Yoga",
+        "date" : "25 Dec, 2023",
+        "intro" : "The Sanskrit term 'Hatha' is an umbrella term for all physical postures of yoga.",
         "description" : [
-            "Fusce vitae nibh quisnulla lacinia pharetra vel ac augorbi a mi nec augue euismod ultrices is eget id enean a condimentum vet eleifend vehicula nequam ullamcorper tortor sitamet ones sapien sempein molestie risus feugam doloeget purus finibus u eu non dolor eleifend at sem eget, interdum ullamcorper nulla. Curabitur mauris ex, convallis.",
-            "Nullam vel diam sit amet erat sagittis egestas. Duis imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In suscipit erat vel tincidunt interdumusce vaseron juekrsh.",
-            "Maecenas volutpat urna ac volutpat cursuis interdum velit hendrerit nisl vulputate venenatbi nulla n ornare id maximus id, mollis a turpiullam aquam eeros lobortis vestibulum necsit amet sapieauris at faucibus sapien malesuada fringilla nras in tempor puru luctus sap.",
-            "Vellolam vel diam sit amet erat sagittis egestas.is imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus muuekrsh In suscipit erat vel tincidunt interdumusce vaseron."
+            "In the West, hatha yoga simply refers to all the other styles of yoga (ashtanga, Iyengar, etc.) that are grounded in a physical practice. However, there are other branches of yoga such as kriya, raja, and karma yoga that are separate from the physical-based yoga practice. The physical-based yoga is the most popular and has numerous styles.",
+            "How to practice: Hatha yoga classes are best for beginners since they are usually paced slower than other yoga styles. Hatha classes today are a classic approach to breathing and exercises. If you are brand-new to yoga, hatha yoga is a great entry point to the practice."
         ],
         "price" : 0.0002,
         "image" : "images/courses/1.jpg"
     },
     "2" : {
-        "title" : "Relax More, Metabolize Better",
-        "date" : "25 April, 2017",
-        "intro" : "Suspendisse laciniunc neaculis pulvinar lacus nibh molestie magna non egestas leo ligula non nulla viverra quamonec tempor neque egetleo feugiaet suscipit tortor porenean sagittis porta risus non ultrorbi facilisis mollis fermeoin eu gravida sapiras justo justo.",
+        "title" : "Vinyasa yoga",
+        "date" : "15 Jan, 2024",
+        "intro" : "Vinyasa means 'to place in a special way' and, in this case, yoga postures.",
         "description" : [
-            "Suspendisse laciniunc neaculis pulvinar lacus nibh molestie magna non egestas leo ligula non nulla viverra quamonec tempor neque egetleo feugiaet suscipit tortor porenean sagittis porta risus non ultrorbi facilisis mollis fermeoin eu gravida sapiras justo justo.",
-            "Vellolam vel diam sit amet erat sagittis egestas.is imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus muuekrsh In suscipit erat vel tincidunt interdumusce vaseron.",
-            "Nullam vel diam sit amet erat sagittis egestas. Duis imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In suscipit erat vel tincidunt interdumusce vaseron juekrsh.",
-            "Maecenas volutpat urna ac volutpat cursuis interdum velit hendrerit nisl vulputate venenatbi nulla n ornare id maximus id, mollis a turpiullam aquam eeros lobortis vestibulum necsit amet sapieauris at faucibus sapien malesuada fringilla nras in tempor puru luctus sap.",
-            "Vellolam vel diam sit amet erat sagittis egestas.is imperdiet tortor eu ante condimentum euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus muuekrsh In suscipit erat vel tincidunt interdumusce vaseron."
+            "Vinyasa yoga is often considered the most athletic yoga style, and was adapted from ashtanga yoga in the 1980s. Many types of yoga can also be considered 'vinyasa flows,' such as ashtanga, power yoga, and prana.",
+            "How to practice: In vinyasa classes, movements are coordinated with your breath in order to flow from one pose to another. Vinyasa styles can vary depending on the teacher, and there can be many types of poses in different sequences. I personally teach an alignment-based style of vinyasa and choreograph new flows every time, but I also like to hold some of the poses a bit longer after warming up. You can find more information on specific vinyasa poses and benefits here."
         ],
         "price" : 0.0008,
         "image" : "images/courses/2.jpg"
+    },
+    "3" : {
+        "title" : "Ashtanga yoga",
+        "date" : "25 Feb, 2024",
+        "intro" : "In Sanskrit, ashtanga is translated as 'Eight Limb path'.",
+        "description" : [
+            "In Mysore, India, people gather to practice this form of yoga together at their own pace—if you see Mysore-led ashtanga, it's expected of you to know the series. Vinyasa yoga stems from ashtanga as the flowing style linking breath to movement.",
+            "How to practice: Ashtanga yoga involves a very physically demanding sequence of postures, so this style of yoga is definitely not for the beginner. It takes an experienced yogi to really love it. Ashtanga starts with five sun salutation A's and five sun salutation B's and then moves into a series of standing and floor postures."
+        ],
+        "price" : 0.0003,
+        "image" : "images/courses/3.jpg"
     }
 }
+
     
