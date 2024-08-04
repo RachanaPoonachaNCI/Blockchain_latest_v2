@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yoga-studio-app-deployment
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-security-groups: "sg-06a10740398c984d7"
+  labels:
+    app: yoga-studio-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yoga-studio-app
+  template:
+    metadata:
+      labels:
+        app: yoga-studio-app
+    spec:
+      containers:
+      - name: yoga-studio-app-container
+        image: DOCKER_IMAGE
+        ports:
+        - containerPort: 3000
+        env:
+        - name: EXAMPLE_ENV_VAR
+          value: "example-value"
