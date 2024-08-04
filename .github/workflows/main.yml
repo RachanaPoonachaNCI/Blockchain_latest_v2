@@ -6,9 +6,9 @@ on:
     branches: [ main ]
 
 env:
-  ECR_REPOSITORY: rachana
-  EKS_CLUSTER_NAME: rachana
-  AWS_REGION: ap-southeast-2
+  ECR_REPOSITORY: devops
+  EKS_CLUSTER_NAME: devops_blockchain_cluster
+  AWS_REGION: eu-north-1
 
 jobs:
   
