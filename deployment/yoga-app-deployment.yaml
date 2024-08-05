@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: yoga-studio-app-deployment
   annotations:
-    service.beta.kubernetes.io/aws-load-balancer-security-groups: "sg-06a10740398c984d7"
+    service.beta.kubernetes.io/aws-load-balancer-security-groups: "sg-061d0cec3ed96cd48"
   labels:
     app: yoga-studio-app
 spec:
