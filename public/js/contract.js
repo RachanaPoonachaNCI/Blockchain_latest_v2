@@ -1,134 +1,26 @@
+// DO NOT MODIFY AUTO GENERATED CONTENT
+
+// AUTO-GENERATED CONTENT - START
+payment_abi = '[{"inputs":[],"name":"deposit","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address payable","name":"_to","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]'
+payment_address = '0x65CE52604D3DDC7308DB58c17E09A2c2F6b3471E'
+appointment_abi = '[{"inputs":[],"name":"getAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_value","type":"string"}],"name":"setString","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"storedString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]'
+appointment_address = '0x8a4297836f985521f8fe42F9E947673871945F6b'
+// AUTO-GENERATED CONTENT - END
+
+
 // the below script code is convention in web3 in forming the communication with Web
 
 const contracts = {
     payment : {
-        ABI : [
-            {
-                "inputs": [],
-                "name": "deposit",
-                "outputs": [],
-                "stateMutability": "payable",
-                "type": "function"
-            },
-            {
-                "inputs": [
-                    {
-                        "internalType": "address payable",
-                        "name": "_to",
-                        "type": "address"
-                    },
-                    {
-                        "internalType": "uint256",
-                        "name": "_amount",
-                        "type": "uint256"
-                    }
-                ],
-                "name": "withdraw",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "getAddress",
-                "outputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "getBalance",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ],
-        Address : "0xd5790b2db3115362c3dab4f50b84792b99bf6657"
+        ABI : payment_abi,
+        Address : payment_address
     },
     appointment : {
-        ABI : [
-            {
-                "inputs": [
-                    {
-                        "internalType": "string",
-                        "name": "_value",
-                        "type": "string"
-                    }
-                ],
-                "name": "setString",
-                "outputs": [],
-                "stateMutability": "nonpayable",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "getAddress",
-                "outputs": [
-                    {
-                        "internalType": "address",
-                        "name": "",
-                        "type": "address"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "getBalance",
-                "outputs": [
-                    {
-                        "internalType": "uint256",
-                        "name": "",
-                        "type": "uint256"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "getString",
-                "outputs": [
-                    {
-                        "internalType": "string",
-                        "name": "",
-                        "type": "string"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            },
-            {
-                "inputs": [],
-                "name": "storedString",
-                "outputs": [
-                    {
-                        "internalType": "string",
-                        "name": "",
-                        "type": "string"
-                    }
-                ],
-                "stateMutability": "view",
-                "type": "function"
-            }
-        ],
-        Address : "0xf3093433d779f5180f62796cdd31be35b3249e7c"
+        ABI : appointment_abi,
+        Address : appointment_address
     }
 }
-//Connecting to Metamask
+
 const connectMetamask = async () => {
     let account;
     console.log(window.ethereum);
@@ -211,41 +103,41 @@ const depositContract = async (account,amount,message) => {
         .on('error', console.error);
 }
 
-const addDataToContract = async (address,message)=>{
+const addDataToContract = async (account,message)=>{
     await window.contract.methods.setString(JSON.stringify(message))
-        .send({ from:address , gas: 1000000 })
+        .send({ from:account , gas: 1000000 })
         .then(function (result) {
             console.log("Transaction Successful:", result);
-        var data = {
-            address : address,
-            data : result
-        }
-        data.data.message = message
-                    
-        fetch("/appointment", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            var data = {
+                address : account,
+                data : result
+            }
+            data.data.message = message
+                        
+            fetch("/appointment", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+                })
+                .then((response)=>{
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Appointment added");
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
             })
-            .then((response)=>{
-                return response.json();
-            })
-            .then(data => {
-                console.log("Appointment added");
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            .catch(function (error) {
+                console.error("Transaction Failed:", error);
             });
-        })
-        .catch(function (error) {
-            console.error("Transaction Failed:", error);
-        });
 }
 
 
-const withdraw = async (address,amount) => {
+const withdraw = async (address,amount,account) => {
     await window.contract.methods.withdraw(address, amount).send({from: account});
     return true;
 }

@@ -1,0 +1,4 @@
+
+======= remix/appointment.sol:AppointmentContract =======
+Contract JSON ABI
+[{"inputs":[],"name":"getAddress","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"getString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"_value","type":"string"}],"name":"setString","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"storedString","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"}]

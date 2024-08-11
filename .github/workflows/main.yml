@@ -1,64 +1,203 @@
 name: Deploy to ECR
+
 on:
- push:
-   branches: [ main ]
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'remix/payment.abi'
+      - 'remix/payment.bin'
+      - 'remix/payment.json'
+      - 'remix/appointment.abi'
+      - 'remix/appointment.bin'
+      - 'remix/appointment.json'
+      - 'public/js/contract.js'
+
 env:
- ECR_REPOSITORY: devops
- EKS_CLUSTER_NAME: devops_blockchain_cluster
- AWS_REGION: eu-north-1
+  ECR_REPOSITORY: devops
+  EKS_CLUSTER_NAME: devops_blockchain_cluster
+  AWS_REGION: eu-north-1
+
 jobs:
- sonarcloud:
-   name: SonarCloud Scan
-   runs-on: ubuntu-latest
-   steps:
-   - name: Checkout code
-     uses: actions/checkout@v3
-     with:
-       fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
-   - name: SonarCloud Scan
-     uses: SonarSource/sonarcloud-github-action@master
-     env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-     with:
-       args: >
-         -Dsonar.qualitygate.wait=true
- deploy:
-   name: Deployment to ECR and EKS
-   runs-on: ubuntu-latest
-   needs: sonarcloud
-   steps:
-   - name: Set short git commit SHA
-     id: commit
-     uses: prompt/actions-commit-hash@v2
-   - name: Checkout code
-     uses: actions/checkout@v3
-     with:
-       fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
-   - name: Configure AWS credentials
-     uses: aws-actions/configure-aws-credentials@v1
-     with:
-       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-       aws-region: ${{env.AWS_REGION}}
-   - name: Login to Amazon ECR
-     id: login-ecr
-     uses: aws-actions/amazon-ecr-login@v1
-   - name: Build, tag, and push image to Amazon ECR
-     env:
-       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
-       IMAGE_TAG: ${{ steps.commit.outputs.short }}
-     run: |
-       docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-       docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-   - name: Update kube config
-     run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
-   - name: Deploy to EKS
-     env:
-       ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
-       IMAGE_TAG: ${{ steps.commit.outputs.short }}
-     run: |
-       kubectl version
-       sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/yoga-app-deployment.yaml
-       kubectl apply -f deployment/yoga-app-deployment.yaml
-       kubectl apply -f deployment/yoga-app-service.yaml
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name : Run ES lint on nodeJs files
+        run: |
+          npm install
+          npx eslint utils/*.js
+          # npx eslint routes/*.js
+        
+  sonarcloud:
+    name: SonarCloud Scan
+    runs-on: ubuntu-latest
+    needs : lint
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      with:
+        args: >
+          -Dsonar.exclusions=**/deploy_contract.py,**/contract.js
+         
+
+    - name: Check for HIGH and MEDIUM security issues
+      run: |
+        response=$(curl --location 'https://sonarcloud.io/api/issues/search?projects=sandeep-yalugar_yoga-studio-dapp' \
+          --header 'Authorization: Bearer ${{ secrets.SONAR_API_KEY }}')
+  
+        high=$(echo "$response" | jq '[.issues[].impacts[] | select(.softwareQuality == "SECURITY" and .severity == "HIGH")] | length')
+        medium=$(echo "$response" | jq '[.issues[].impacts[] | select(.softwareQuality == "SECURITY" and .severity == "MEDIUM")] | length')
+  
+        echo "HIGH: $high"
+        echo "MEDIUM: $medium"
+  
+        # if [ "$high" -gt 0 ] || [ "$medium" -gt 0 ]; then
+        if [ "$high" -gt 0 ]; then
+          echo "Blocking deployment due to HIGH or MEDIUM security issues."
+          exit 1
+        fi
+
+  deploy:
+    name: Deployment to ECR and EKS
+    runs-on: ubuntu-latest
+    needs: sonarcloud
+
+    steps:
+    - name: Set short git commit SHA
+      id: commit
+      uses: prompt/actions-commit-hash@v2
+      
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for better relevancy of analysis
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        sudo add-apt-repository ppa:ethereum/ethereum
+        sudo apt-get update
+        sudo apt-get install solc
+        python -m pip install --upgrade pip
+        pip install web3
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Check changes in contracts
+      id: changes
+      run: |
+        echo "Checking for changes in contract files..."
+        if git diff --name-only HEAD^ HEAD | grep 'remix/payment.sol'; then
+          echo "PAYMENT_CONTRACT_CHANGED=true" >> $GITHUB_ENV
+        else
+          echo "PAYMENT_CONTRACT_CHANGED=false" >> $GITHUB_ENV
+        fi
+
+        if git diff --name-only HEAD^ HEAD | grep 'remix/appointment.sol'; then
+          echo "APPOINTMENT_CONTRACT_CHANGED=true" >> $GITHUB_ENV
+        else
+          echo "APPOINTMENT_CONTRACT_CHANGED=false" >> $GITHUB_ENV
+        fi
+
+    - name: Deploy payment.sol if changed
+      if: env.PAYMENT_CONTRACT_CHANGED == 'true'
+      run: |
+        solc --abi remix/payment.sol > remix/payment.abi
+        solc --bin remix/payment.sol > remix/payment.bin 
+
+        echo "Deploying payment.sol..."
+        python deploy_contract.py
+        git add remix/payment.json
+        git add remix/payment.abi
+        git add remix/payment.bin
+        git add public/js/contract.js
+        git commit -m "payment.sol compilation"
+      env:
+        ETH_WALLET_PRIVATE_KEY: ${{ secrets.ETH_WALLET_PRIVATE_KEY }}
+        INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+        SOLIDITY_FILE_NAME: payment
+        GH_PAT: ${{ secrets.GH_PAT }}
+
+    - name: Deploy appointment.sol if changed
+      if: env.APPOINTMENT_CONTRACT_CHANGED == 'true'
+      run: |
+        solc --abi remix/appointment.sol > remix/appointment.abi
+        solc --bin remix/appointment.sol > remix/appointment.bin
+
+        echo "Deploying appointment.sol..."
+        python deploy_contract.py
+        git add remix/appointment.json
+        git add remix/appointment.abi
+        git add remix/appointment.bin
+        git add public/js/contract.js
+        git commit -m "appointment.sol compilation"
+      env:
+        ETH_WALLET_PRIVATE_KEY: ${{ secrets.ETH_WALLET_PRIVATE_KEY }}
+        INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
+        SOLIDITY_FILE_NAME: appointment
+        GH_PAT: ${{ secrets.GH_PAT }}
+    
+    - name: Push changes to repo
+      run: |
+        git push origin main
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+
+    - name: No changes to contracts
+      if: env.PAYMENT_CONTRACT_CHANGED == 'false' && env.APPOINTMENT_CONTRACT_CHANGED == 'false'
+      run: |
+        echo "No changes to contracts, skipping deployment."
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{env.AWS_REGION}}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
+        IMAGE_TAG: ${{ steps.commit.outputs.short }}
+      run: |
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+    - name: Update kube config
+      run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+
+    - name: Deploy to EKS
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}        
+        IMAGE_TAG: ${{ steps.commit.outputs.short }}
+      run: |
+        kubectl version
+        sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" deployment/yoga-app-deployment.yaml
+        kubectl apply -f deployment/yoga-app-deployment.yaml
+        kubectl apply -f deployment/yoga-app-service.yaml
