@@ -138,7 +138,7 @@ jobs:
         ETH_WALLET_PRIVATE_KEY: ${{ secrets.ETH_WALLET_PRIVATE_KEY }}
         INFURA_API_KEY: ${{ secrets.INFURA_API_KEY }}
         SOLIDITY_FILE_NAME: payment
-        GH_PAT: ${{ secrets.GH_PAT }}
+        GH_PAT: ${{ secrets.TOKEN_GITHUB }}
 
     - name: Deploy appointment.sol if changed
       if: env.APPOINTMENT_CONTRACT_CHANGED == 'true'
