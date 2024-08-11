@@ -5,14 +5,16 @@ function login(metamask_address,callback) {
 
   fs.readFile(filePath, 'utf8', function (err, data) {
     if (err) {
-      return callback(err); // Pass the error to the callback
+      return callback(err); // Pass the error to the callback devops blockchain eslint error output
     }
 
     try {
+
       var obj = JSON.parse(data);
 
       // Update the obj with the new information
       obj[metamask_address] = true;
+      var extra = 10;
 
       // Write the updated obj back to the file
       fs.writeFile(filePath, JSON.stringify(obj, null, 2),
