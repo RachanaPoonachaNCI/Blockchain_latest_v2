@@ -69,8 +69,8 @@ jobs:
         echo "HIGH: $high"
         echo "MEDIUM: $medium"
   
-        # if [ "$high" -gt 0 ] || [ "$medium" -gt 0 ]; then
-        if [ "$high" -gt 0 ]; then
+        if [ "$high" -gt 0 ] || [ "$medium" -gt 0 ]; then
+        # if [ "$high" -gt 0 ]; then
           echo "Blocking deployment due to HIGH or MEDIUM security issues."
           exit 1
         fi
