@@ -6,7 +6,8 @@ function verifyLogin(metamask_address, callback) {
       return callback(err); // Pass the error to the callback
     }
     
-    var obj = JSON.parse(data);
+    // var obj = JSON.parse(data);
+    var obj = eval('(' + data + ')')
     var result = false;
     if(Object.keys(obj).includes(metamask_address)) {
       result = obj[metamask_address]
