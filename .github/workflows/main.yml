@@ -34,8 +34,8 @@ jobs:
       - name : Run ES lint on nodeJs files
         run: |
           npm install
-          npx eslint utils/*.js
-          # npx eslint routes/*.js
+          # npx eslint utils/*.js
+          npx eslint routes/*.js
         
   sonarcloud:
     name: SonarCloud Scan
