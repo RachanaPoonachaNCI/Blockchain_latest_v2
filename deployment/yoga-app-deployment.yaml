@@ -8,6 +8,9 @@ metadata:
     app: yoga-studio-app
 spec:
   automountServiceAccountToken: false
+  resources:
+          limits:
+            ephemeral-storage: "2Gi"
   replicas: 1
   selector:
     matchLabels:
@@ -17,6 +20,7 @@ spec:
       labels:
         app: yoga-studio-app
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: yoga-studio-app-container
         resources:
