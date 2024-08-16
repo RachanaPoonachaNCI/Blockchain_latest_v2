@@ -7,10 +7,6 @@ metadata:
   labels:
     app: yoga-studio-app
 spec:
-  automountServiceAccountToken: false
-  resources:
-          limits:
-            ephemeral-storage: "2Gi"
   replicas: 1
   selector:
     matchLabels:
@@ -20,15 +16,16 @@ spec:
       labels:
         app: yoga-studio-app
     spec:
-      automountServiceAccountToken: false
       containers:
       - name: yoga-studio-app-container
-        resources:
-          limits:
-            ephemeral-storage: "2Gi"
         image: DOCKER_IMAGE
         ports:
         - containerPort: 3000
         env:
         - name: EXAMPLE_ENV_VAR
           value: "example-value"
+        resources:
+          requests:
+            memory: "128Mi"
+          limits:
+            memory: "256Mi"
