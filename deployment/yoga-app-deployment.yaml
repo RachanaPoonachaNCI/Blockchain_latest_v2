@@ -18,6 +18,9 @@ spec:
     spec:
       containers:
       - name: yoga-studio-app-container
+        resources:
+          limits:
+            ephemeral-storage: "2Gi"
         image: DOCKER_IMAGE
         ports:
         - containerPort: 3000
