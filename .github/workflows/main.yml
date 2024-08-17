@@ -60,7 +60,7 @@ jobs:
 
     - name: Check for HIGH and MEDIUM security issues
       run: |
-        response=$(curl --location 'https://sonarcloud.io/api/issues/search?projects=sandeep-yalugar_yoga-studio-dapp' \
+        response=$(curl --location 'https://sonarcloud.io/api/issues/search?projects=Blockchain_latest_v2' \
           --header 'Authorization: Bearer ${{ secrets.SONAR_API_KEY }}')
   
         high=$(echo "$response" | jq '[.issues[].impacts[] | select(.softwareQuality == "SECURITY" and .severity == "HIGH")] | length')
@@ -69,11 +69,12 @@ jobs:
         echo "HIGH: $high"
         echo "MEDIUM: $medium"
   
-        # if [ "$high" -gt 0 ] || [ "$medium" -gt 0 ]; then
-        if [ "$high" -gt 0 ]; then
+        if [ "$high" -gt 0 ] || [ "$medium" -gt 0 ]; then
+        # if [ "$high" -gt 0 ]; then
           echo "Blocking deployment due to HIGH or MEDIUM security issues."
           exit 1
         fi
+
 
   deploy:
     name: Deployment to ECR and EKS

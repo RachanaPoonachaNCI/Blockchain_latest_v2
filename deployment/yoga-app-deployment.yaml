@@ -16,6 +16,7 @@ spec:
       labels:
         app: yoga-studio-app
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: yoga-studio-app-container
         image: DOCKER_IMAGE
@@ -24,3 +25,8 @@ spec:
         env:
         - name: EXAMPLE_ENV_VAR
           value: "example-value"
+        resources:
+          requests:
+            memory: "128Mi"
+          limits:
+            memory: "256Mi"
