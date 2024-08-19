@@ -16,7 +16,7 @@ spec:
       labels:
         app: yoga-studio-app
     spec:
-      # automountServiceAccountToken: false
+      automountServiceAccountToken: false
       containers:
       - name: yoga-studio-app-container
         image: DOCKER_IMAGE
@@ -31,4 +31,4 @@ spec:
 
           limits:
             memory: "256Mi"
-            # ephemeral-storage: "2Gi"
+            ephemeral-storage: "2Gi"
