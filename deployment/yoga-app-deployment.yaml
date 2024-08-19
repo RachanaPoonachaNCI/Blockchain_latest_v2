@@ -17,6 +17,12 @@ spec:
         app: yoga-studio-app
     spec:
       automountServiceAccountToken: false
+      limits:
+      - type: PersistentVolumeClaim
+        max:
+          storage: 2Gi
+        min:
+          storage: 1Gi
       containers:
       - name: yoga-studio-app-container
         image: DOCKER_IMAGE
@@ -30,5 +36,6 @@ spec:
             memory: "128Mi"
           limits:
             memory: "256Mi"
+
 
 
