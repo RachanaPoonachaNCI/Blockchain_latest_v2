@@ -60,7 +60,7 @@ jobs:
 
     - name: Check for HIGH and MEDIUM security issues
       run: |
-        response=$(curl --location 'https://sonarcloud.io/api/issues/search?projects=Blockchain_latest_v2' \
+        response=$(curl --location 'https://sonarcloud.io/api/issues/search?projects=RachanaPoonachaNCI_Blockchain_latest_v2' \
           --header 'Authorization: Bearer ${{ secrets.SONAR_API_KEY }}')
   
         high=$(echo "$response" | jq '[.issues[].impacts[] | select(.softwareQuality == "SECURITY" and .severity == "HIGH")] | length')
