@@ -64,7 +64,7 @@ jobs:
           --header 'Authorization: Bearer ${{ secrets.SONAR_API_KEY }}')
   
         high=$(echo "$response" | jq '[.issues[] | select(.issueStatus != "FIXED") | .impacts[] | select(.softwareQuality == "SECURITY" and .severity == "HIGH")] | length')
-        medium=$(echo "$response" | jq '[.issues[] | select(.issueStatus != "FIXED") | .impacts[] | select(.softwareQuality == "SECURITY" and .severity == "MEDIUM")] | length')
+        medium=$(echo "$response" | jq '[.issues[] | select(.issueStatus != "FIXED" and .issueStatus != "FALSE-POSITIVE") | .impacts[] | select(.softwareQuality == "SECURITY" and .severity == "MEDIUM")] | length')
   
         echo "HIGH: $high"
         echo "MEDIUM: $medium"
