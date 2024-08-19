@@ -63,8 +63,8 @@ jobs:
         response=$(curl --location 'https://sonarcloud.io/api/issues/search?projects=RachanaPoonachaNCI_Blockchain_latest_v2' \
           --header 'Authorization: Bearer ${{ secrets.SONAR_API_KEY }}')
   
-        high=$(echo "$response" | jq '[.issues[].impacts[] | select(.softwareQuality == "SECURITY" and .severity == "HIGH")] | length')
-        medium=$(echo "$response" | jq '[.issues[].impacts[] | select(.softwareQuality == "SECURITY" and .severity == "MEDIUM")] | length')
+        high=$(echo "$response" | jq '[.issues[] | select(.issueStatus != "FIXED") | .impacts[] | select(.softwareQuality == "SECURITY" and .severity == "HIGH")] | length')
+        medium=$(echo "$response" | jq '[.issues[] | select(.issueStatus != "FIXED") | .impacts[] | select(.softwareQuality == "SECURITY" and .severity == "MEDIUM")] | length')
   
         echo "HIGH: $high"
         echo "MEDIUM: $medium"
